@@ -25,4 +25,25 @@ enum Choice: Int {
   }
 }
 
-print(Choice.Rock)
+extension Choice {
+  /// Create a new Choice value from string input
+  ///
+  /// - parameter string: The string value to check
+  /// - returns: The correct Choice value or nil
+  init?(string: String) {
+    switch string.uppercaseString {
+    case "R":
+      self = .Rock
+    case "P":
+      self = .Paper
+    case "S":
+      self = .Scissors
+    default:
+      return nil
+    }
+  }
+}
+
+if let rock = Choice(string: "R") {
+  print(rock) // This should print "Rock"
+}
