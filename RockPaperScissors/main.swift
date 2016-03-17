@@ -14,15 +14,6 @@ enum Choice: Int {
   case Rock
   case Paper
   case Scissors
-  
-  /// The string representation of the choice value
-  var description: String {
-    switch self {
-    case .Rock: return "Rock"
-    case .Paper: return "Paper"
-    case .Scissors: return "Scissors"
-    }
-  }
 }
 
 extension Choice {
@@ -88,52 +79,45 @@ func getUserInputChoice() -> Choice? {
 
 // MARK: - Main Game
 
-func start() {
+func startGame() {
   print("Welcome to Rock Paper Scissors!")
   
-  // Best of 3
-  let maximumRounds = 3
-  var currentRounds = 0
+  let maximumRoundCount = 3
+  var currentRoundCount = 0
   
-  // How many wins?
-  var wins = 0
+  var playerWins = 0
   
-  while currentRounds < maximumRounds {
-    print("Pick one: R, P, S")
+  while currentRoundCount < maximumRoundCount {
+    print("(R)ock (P)aper or (S)cissors?")
     if let choice = getUserInputChoice() {
-      let opposingChoice = Choice.random()
+      let opponentChoice = Choice.random()
       
-      print("You picked \(choice)")
-      print("Opponent picked \(opposingChoice)")
-
-      // Skip the score checking if it's a draw
-      guard choice != opposingChoice else {
-        print("It's a draw!")
+      guard choice != opponentChoice else {
+        print("Both picked \(choice). It's a draw!")
         continue
       }
-
-      // Check for player win
-      if choice.beats(opposingChoice) {
-        print("Your \(choice) beats the opponent's \(opposingChoice)!")
-        wins += 1
+      
+      if choice.beats(opponentChoice) {
+        print("Your \(choice) beats the opponent's \(opponentChoice). You win!")
+        playerWins += 1
       }
       else {
-        print("The opponent's \(opposingChoice) beats your \(choice)!")
+        print("The opponent's \(opponentChoice) beats your \(choice). You lose!")
       }
       
-      // Increase round counter
-      currentRounds += 1
+      currentRoundCount += 1
     }
   }
   
-  if wins >= 2 {
-    print("You won \(wins)-\(maximumRounds-wins)!")
+  let winDifference = maximumRoundCount - playerWins
+  if playerWins >= 2 {
+    print("You won the game! Score: \(playerWins)-\(winDifference)")
   }
   else {
-    print("You lost \(maximumRounds-wins)-\(wins)!")
+    print("You lost the game! Score: \(winDifference)-\(playerWins)")
   }
   
   print("Thanks for playing!")
 }
 
-start()
+startGame()
