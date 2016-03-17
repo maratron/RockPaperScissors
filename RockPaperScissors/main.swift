@@ -42,8 +42,23 @@ extension Choice {
       return nil
     }
   }
+  
+  /// Checks whether the current choice beats the given choice
+  ///
+  /// - parameter choice: The choice to check against
+  /// - returns: True or false
+  func beats(choice: Choice) -> Bool {
+    if choice == self { return false }
+    
+    switch self {
+    case .Rock:     return choice == .Scissors
+    case .Paper:    return choice == .Rock
+    case .Scissors: return choice == .Paper
+    }
+  }
 }
 
-if let rock = Choice(string: "R") {
-  print(rock) // This should print "Rock"
-}
+print(Choice.Rock.beats(Choice.Paper))     // False
+print(Choice.Rock.beats(Choice.Scissors))  // True
+print(Choice.Scissors.beats(Choice.Rock))  // False
+print(Choice.Scissors.beats(Choice.Paper)) // True
