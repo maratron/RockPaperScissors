@@ -65,16 +65,31 @@ extension Choice {
   }
 }
 
-let available: [Choice] = [.Rock, .Paper, .Scissors]
-var times: [Choice: Int] = [.Rock: 0, .Paper: 0, .Scissors: 0]
+// MARK: - Helpers
 
-for var i = 0; i < 1000; i++ {
-  let random = Choice.random()
-  if available.contains(random) {
-    times[random]! += 1
+func getUserInput() -> String {
+  let data = NSFileHandle.fileHandleWithStandardInput().availableData
+  
+  guard let string = String(data: data, encoding: NSUTF8StringEncoding) else {
+    print("Could not get string from data.")
+    return ""
   }
+  
+  let characterSet = NSCharacterSet.whitespaceAndNewlineCharacterSet()
+  return string.stringByTrimmingCharactersInSet(characterSet)
 }
 
-print("Rock found: \(times[.Rock]!) times")
-print("Paper found: \(times[.Paper]!) times")
-print("Scissors found: \(times[.Scissors]!) times")
+/// Prompt the user for a choice input
+///
+/// - returns: The parsed Choice value, or nil
+func getUserInputChoice() -> Choice? {
+  return Choice(string: getUserInput())
+}
+
+print("Pick one (R/P/S):")
+if let choice = getUserInputChoice() {
+  print("You picked \(choice).")
+}
+else {
+  print("Invalid choice.")
+}
