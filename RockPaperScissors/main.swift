@@ -56,9 +56,25 @@ extension Choice {
     case .Scissors: return choice == .Paper
     }
   }
+  
+  /// Returns a random Choice value from the enum
+  ///
+  /// - returns: The random value
+  static func random() -> Choice {
+    return Choice(rawValue: GKRandomSource.sharedRandom().nextIntWithUpperBound(3))!
+  }
 }
 
-print(Choice.Rock.beats(Choice.Paper))     // False
-print(Choice.Rock.beats(Choice.Scissors))  // True
-print(Choice.Scissors.beats(Choice.Rock))  // False
-print(Choice.Scissors.beats(Choice.Paper)) // True
+let available: [Choice] = [.Rock, .Paper, .Scissors]
+var times: [Choice: Int] = [.Rock: 0, .Paper: 0, .Scissors: 0]
+
+for var i = 0; i < 1000; i++ {
+  let random = Choice.random()
+  if available.contains(random) {
+    times[random]! += 1
+  }
+}
+
+print("Rock found: \(times[.Rock]!) times")
+print("Paper found: \(times[.Paper]!) times")
+print("Scissors found: \(times[.Scissors]!) times")
